@@ -26,13 +26,13 @@ fun WelcomeScreen(){
             text = "Bem-vindo",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 56.dp)
+            modifier = Modifier.padding(bottom = 16.dp)
             )
         Text(
             text = "Faça login ou cadastre-se para continuar",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 350.dp)
+            modifier = Modifier.padding(bottom = 50.dp)
             )
 
         Button(
