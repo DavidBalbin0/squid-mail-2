@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -86,7 +85,7 @@ fun RegistrationScreen() {
             value = password,
             onValueChange = {
                 password = it
-                passwordError = if (isValidPassword(it)) "" else "A senha deve ter pelo menos 8 caracteres"
+                passwordError = if (isValidPassword(it)) "" else "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, um número e um caractere especial."
             },
             label = { Text("Senha") },
             modifier = Modifier.fillMaxWidth(),
@@ -141,8 +140,20 @@ fun isValidEmail(email: String): Boolean {
 
 // Function to validate password requirements
 fun isValidPassword(password: String): Boolean {
-    return password.length >= 8
+    // Regular expression to check the password requirements
+
+    // - At least 8 characters long
+    // - Contains at least one uppercase letter (A-Z)
+    // - Contains at least one lowercase letter (a-z)
+    // - Contains at least one digit (0-9)
+    // - Contains at least one special character (@, $, !, %, *, ?, &)
+    val passwordPattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$"
+    val passwordMatcher = Regex(passwordPattern)
+
+    // Returns true if the password matches the pattern, false otherwise
+    return passwordMatcher.matches(password)
 }
+
 
 
 @Preview(showBackground = true)
