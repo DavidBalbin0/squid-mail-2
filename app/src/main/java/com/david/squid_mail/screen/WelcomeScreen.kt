@@ -28,18 +28,18 @@ fun WelcomeScreen(navController: NavController){
             text = "Bem-vindo",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 56.dp)
             )
         Text(
             text = "Faça login ou cadastre-se para continuar",
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(bottom = 50.dp)
+            modifier = Modifier.padding(bottom = 250.dp)
             )
 
         Button(
             onClick = {  },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(top = 150.dp)
         ) {
             Text("Entrar")
         }
