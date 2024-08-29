@@ -10,11 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.coroutineScope
 
 @Composable
 
-fun WelcomeScreen(){
+fun WelcomeScreen(navController: NavController){
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -36,10 +38,16 @@ fun WelcomeScreen(){
             )
 
         Button(
-            onClick = { /* Registration logic */  },
+            onClick = {  },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Entrar")
+        }
+        Button(
+            onClick = { navController.navigate("register")  },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Registrar-se")
         }
     }
 }
@@ -49,6 +57,7 @@ fun WelcomeScreen(){
 @Preview(showBackground = true)
 @Composable
 fun WelcomeScreenPreview(){
-    WelcomeScreen()
+    var navController = rememberNavController()
+    WelcomeScreen(navController)
 }
 
