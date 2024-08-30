@@ -2,18 +2,25 @@ package com.david.squid_mail.screen
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.david.squid_mail.components.DefaultTopBar
+import com.david.squid_mail.components.DrawerMenu
 import com.david.squid_mail.components.EmailComponent
 import com.david.squid_mail.components.SelectionModeTopBar
 import com.david.squid_mail.model.Email
+import kotlinx.coroutines.launch
 
 @Composable
 fun InboxScreen() {
@@ -38,44 +45,59 @@ fun InboxScreen() {
         )
     }
 
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
     var isSelectionMode by remember { mutableStateOf(false) }
     val selectedEmails = remember { mutableStateListOf<Email>() }
 
-    Scaffold(
-        topBar = {
-            if (isSelectionMode) {
-                SelectionModeTopBar(selectedCount = selectedEmails.size,
-                    onCancelSelection = {
-                        isSelectionMode = false
-                        selectedEmails.clear()
-                        emails.forEach { it.isSelected.value = false }
-                    })
-            } else {
-                DefaultTopBar(unreadEmailsCount = 5, onMenuClick = {})
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                DrawerMenu()
             }
-        }
-    ) { paddingValues ->
-        LazyColumn(contentPadding = paddingValues) {
-            items(emails) {
-                EmailComponent(
-                    email = it,
-                    onLongClick = {
-                        if (!isSelectionMode) {
-                            isSelectionMode = true
+        }) {
+        Scaffold(
+            topBar = {
+                if (isSelectionMode) {
+                    SelectionModeTopBar(selectedCount = selectedEmails.size,
+                        onCancelSelection = {
+                            isSelectionMode = false
+                            selectedEmails.clear()
+                            emails.forEach { it.isSelected.value = false }
+                        })
+                } else {
+                    DefaultTopBar(unreadEmailsCount = 5, onMenuClick = {
+                        scope.launch {
+                            drawerState.open()
                         }
-                        toggleSelection(it, selectedEmails)
-                    },
-                    onClick = {
-                        if (isSelectionMode) {
+                    })
+                }
+            }
+        ) { paddingValues ->
+            LazyColumn(contentPadding = paddingValues) {
+                items(emails) {
+                    EmailComponent(
+                        email = it,
+                        onLongClick = {
+                            if (!isSelectionMode) {
+                                isSelectionMode = true
+                            }
                             toggleSelection(it, selectedEmails)
-                        } else {
-                            // Ação normal de abrir o e-mail
+                        },
+                        onClick = {
+                            if (isSelectionMode) {
+                                toggleSelection(it, selectedEmails)
+                            } else {
+                                // Ação normal de abrir o e-mail
+                            }
                         }
-                    }
-                )
+                    )
+                }
             }
         }
     }
+
 
 
 }
