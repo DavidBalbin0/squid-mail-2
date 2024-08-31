@@ -42,7 +42,8 @@ fun DrawerMenu(onCloseMenu: () -> Job) {
             painter = painterResource(id = R.drawable.ic_menu_close_clear_cancel),
             contentDescription = "Close Menu",
             tint = Color.White,
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier
+                .size(24.dp)
                 .clickable { onCloseMenu() }
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -68,7 +69,7 @@ fun DrawerMenu(onCloseMenu: () -> Job) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                MenuItem(icon = R.drawable.ic_menu_edit, label = "Trabalho")
+                MenuItem(icon = ic_menu_edit, label = "Trabalho")
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuItem(icon = ic_menu_edit, label = "Mvp Fiap")
                 Spacer(modifier = Modifier.width(32.dp))
