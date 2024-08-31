@@ -54,7 +54,9 @@ fun InboxScreen() {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                DrawerMenu()
+                DrawerMenu {
+                    scope.launch { drawerState.close() }
+                }
             }
         }) {
         Scaffold(
