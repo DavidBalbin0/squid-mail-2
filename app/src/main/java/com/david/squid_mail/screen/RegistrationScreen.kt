@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,12 +35,21 @@ import androidx.navigation.compose.rememberNavController
 import com.david.squid_mail.R
 
 @Composable
-fun RegistrationScreen(navController: NavController) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-    var emailError by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf("") }
+fun RegistrationScreen(
+    viewModel: RegistrationViewModel,
+    navController: NavController
+) {
+    val email by viewModel::email
+    val password by viewModel::password
+    val confirmPassword by viewModel::confirmPassword
+    val passwordVisible by viewModel::passwordVisible
+    val emailError by viewModel::emailError
+    val passwordError by viewModel::passwordError
+    val confirmPasswordError by viewModel::confirmPasswordError
+    val isFormValid by viewModel::isFormValid
+
+    var generalError by remember { mutableStateOf("") }
+
 
     Column(
         modifier = Modifier
@@ -57,10 +67,7 @@ fun RegistrationScreen(navController: NavController) {
         // Email Field
         OutlinedTextField(
             value = email,
-            onValueChange = {
-                email = it
-                emailError = if (isValidEmail(it)) "" else "Formato de e-mail inválido"
-            },
+            onValueChange = { viewModel.onEmailChange(it)},
             label = { Text("E-mail") },
             modifier = Modifier.fillMaxWidth(),
             isError = emailError.isNotEmpty(),
@@ -85,18 +92,18 @@ fun RegistrationScreen(navController: NavController) {
         // Password Field
         OutlinedTextField(
             value = password,
-            onValueChange = {
-                password = it
-                passwordError = if (isValidPassword(it)) "" else "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, um número e um caractere especial."
-            },
+            onValueChange = { viewModel.onPasswordChange(it) },
             label = { Text("Senha") },
             modifier = Modifier.fillMaxWidth(),
             isError = passwordError.isNotEmpty(),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val image = if (passwordVisible) R.drawable.gps_not_fixed else R.drawable.gps_off
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(painterResource(id = image), contentDescription = null)
+                IconButton(onClick = { viewModel.onPasswordVisibilityChange() }) {
+                    Icon(
+                        painter = painterResource(id = image),
+                        contentDescription = if (passwordVisible) "Ocultar senha" else "Mostrar senha"
+                    )
                 }
             },
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -115,26 +122,80 @@ fun RegistrationScreen(navController: NavController) {
             )
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // pass confirmation field
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { viewModel.onConfirmPasswordChange(it) },
+            label = { Text("Confirme a Senha") },
+            modifier = Modifier.fillMaxWidth(),
+            isError = confirmPasswordError.isNotEmpty(),
+            visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                IconButton(onClick = { viewModel.onPasswordVisibilityChange() }) {
+                    val image = if (passwordVisible) R.drawable.gps_not_fixed else R.drawable.gps_off
+                    IconButton(onClick = { viewModel.onPasswordVisibilityChange() }) {
+                        Icon(
+                            painter = painterResource(id = image),
+                            contentDescription = if (passwordVisible) "Ocultar senha" else "Mostrar senha"
+                        )
+                    }
+                }
+            },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            )
+        )
+        if (confirmPasswordError.isNotEmpty()) {
+            Text(
+                text = confirmPasswordError,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(start = 16.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         // Register Button
         Button(
-            onClick = { /* Registration logic */  },
-            modifier = Modifier.fillMaxWidth()
+            onClick = {
+                viewModel.submitForm(
+                    onSuccess = {
+                        // Navegar para a próxima tela após o cadastro bem-sucedido
+                        navController.navigate("home") // Ajuste a rota conforme necessário
+                    },
+                    onError = { errorMsg ->
+                        // Atualizar o estado de erro geral para exibir uma mensagem
+                        generalError = errorMsg
+                    }
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = isFormValid
         ) {
             Text("Cadastrar")
         }
 
         // Placeholder for Error Message
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Placeholder para mensagens de erro futuras.",
-            color = MaterialTheme.colorScheme.error,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.align(Alignment.Start)
-        )
+
+        if (generalError.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = generalError,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.align(Alignment.Start)
+            )
+        }
     }
 }
+
 // Function to validate email format
 fun isValidEmail(email: String): Boolean {
     return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -157,10 +218,17 @@ fun isValidPassword(password: String): Boolean {
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun RegistrationScreenPreview() {
     val navController = rememberNavController()
-    RegistrationScreen(navController)
+    // Para a pré-visualização, podemos criar uma instância de RegistrationViewModel com valores predefinidos
+    val fakeViewModel = RegistrationViewModel().apply {
+        // Definir valores de teste
+        email = "test@example.com"
+        password = "Password1!"
+        confirmPassword = "Password1!"
+        isFormValid = true
+    }
+    RegistrationScreen(viewModel = fakeViewModel, navController = navController)
 }

@@ -28,15 +28,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.david.squid_mail.R
 
 @Composable
-fun LoginScreen(){
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-    var emailError by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf("") }
+fun LoginScreen(viewModel: LoginViewModel, navController: NavController){
+    val email by viewModel::email
+    val password by viewModel::password
+    val emailError by viewModel::emailError
+    val passwordError by viewModel::passwordError
+    val passwordVisible by viewModel::passwordVisible
 
     Column (
         Modifier
@@ -47,10 +49,7 @@ fun LoginScreen(){
     ) {
         OutlinedTextField(
             value = email,
-            onValueChange = {
-                email = it
-                emailError = if (isValidEmail(it)) "" else "Formato de e-mail inválido"
-            },
+            onValueChange = { viewModel.onEmailChange(it) },
             label = { Text("E-mail") },
             modifier = Modifier.fillMaxWidth(),
             isError = emailError.isNotEmpty(),
@@ -74,17 +73,14 @@ fun LoginScreen(){
 
         OutlinedTextField(
             value = password,
-            onValueChange = {
-                password = it
-                passwordError = if (isValidPassword(it)) "" else "A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, um número e um caractere especial."
-            },
+            onValueChange = { viewModel.onPasswordChange(it) },
             label = { Text("Senha") },
             modifier = Modifier.fillMaxWidth(),
             isError = passwordError.isNotEmpty(),
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val image = if (passwordVisible) R.drawable.gps_not_fixed else R.drawable.gps_off
-                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                IconButton(onClick = { viewModel.togglePasswordVisibility()  }) {
                     Icon(painterResource(id = image), contentDescription = null)
                 }
             },
@@ -107,7 +103,7 @@ fun LoginScreen(){
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { /* Registration logic */  },
+            onClick = { viewModel.login() },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
@@ -133,6 +129,8 @@ fun LoginScreen(){
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview(){
-    LoginScreen()
+fun LoginScreenPreview() {
+    val viewModel = LoginViewModel()
+    val navController = rememberNavController()
+    LoginScreen(viewModel = viewModel, navController = navController)
 }

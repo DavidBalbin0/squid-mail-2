@@ -38,7 +38,7 @@ fun WelcomeScreen(navController: NavController){
             )
 
         Button(
-            onClick = {  },
+            onClick = { navController.navigate("login") },
             modifier = Modifier.fillMaxWidth().padding(top = 150.dp)
         ) {
             Text("Entrar")

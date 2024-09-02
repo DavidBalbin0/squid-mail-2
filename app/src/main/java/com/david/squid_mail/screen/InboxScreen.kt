@@ -2,7 +2,11 @@ package com.david.squid_mail.screen
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -75,6 +79,9 @@ fun InboxScreen() {
                         }
                     })
                 }
+            },
+            floatingActionButton = {
+                Icon(Icons.Default.Add, contentDescription = "add mail")
             }
         ) { paddingValues ->
             LazyColumn(contentPadding = paddingValues) {
