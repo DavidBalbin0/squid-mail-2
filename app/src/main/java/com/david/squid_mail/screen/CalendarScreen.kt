@@ -1,13 +1,16 @@
 package com.david.squid_mail.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -20,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -109,7 +113,8 @@ fun CalendarScreen() {
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
-                    modifier = Modifier.padding(8.dp)
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -130,16 +135,18 @@ fun CalendarScreen() {
                         val date = LocalDate.of(currentMonth.value.year, currentMonth.value.month, dayOfMonth)
                         val hasEvent = events.value[date]?.isNotEmpty() == true
 
-                        Column(
+                        Box(
                             modifier = Modifier
                                 .size(48.dp)
                                 .padding(8.dp)
+                                .clip(RoundedCornerShape(24.dp))
                                 .background(if (hasEvent) Color.White else Color.Transparent)
                                 .clickable {
                                     selectedDate.value = date
                                     showDialog.value = true
                                 },
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                contentAlignment = Alignment.Center,
+//                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
                                 text = dayOfMonth.toString(),
@@ -150,10 +157,10 @@ fun CalendarScreen() {
                             )
                             if (hasEvent) {
                                 Text(
-                                    text = "•",
+                                    text = "",
                                     fontSize = 24.sp,
                                     color = Color.Red,
-                                    modifier = Modifier.padding(top = 4.dp)
+                                    modifier = Modifier.padding(top = 10.dp)
                                 )
                             }
                         }
