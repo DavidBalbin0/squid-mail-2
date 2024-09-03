@@ -23,14 +23,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailReadScreen(
     viewModel: EmailReadViewModel,
-    onBack: () -> Unit,
-    onReply: () -> Unit
+    navController: NavController
 ) {
     // Load the email (this could be passed via nav arguments in a real app)
     LaunchedEffect(Unit) {
@@ -43,7 +45,7 @@ fun EmailReadScreen(
             TopAppBar(
                 title = { Text("Email Details") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {navController.popBackStack()}) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -54,7 +56,7 @@ fun EmailReadScreen(
                             contentDescription = "Favorite"
                         )
                     }
-                    IconButton(onClick = { viewModel.replyToEmail(); onReply() }) {
+                    IconButton(onClick = { viewModel.replyToEmail() }) {
                         Icon(Icons.Default.ExitToApp, contentDescription = "Reply")
                     }
                     IconButton(onClick = { viewModel.deleteEmail() }) {
@@ -85,4 +87,12 @@ fun EmailReadScreen(
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewEmailDetailScreen() {
+    val viewModel = EmailReadViewModel()
+    val navController = rememberNavController()
+    EmailReadScreen(viewModel, navController )
 }
