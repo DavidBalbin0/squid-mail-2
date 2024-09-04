@@ -45,7 +45,7 @@ fun EmailReadScreen(
             TopAppBar(
                 title = { Text("Email Details") },
                 navigationIcon = {
-                    IconButton(onClick = {navController.popBackStack()}) {
+                    IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
                 },
@@ -74,12 +74,24 @@ fun EmailReadScreen(
                     .fillMaxSize()
                     .padding(padding)
             ) {
-                Text(text = "From: ${viewModel.emailSender}", style = MaterialTheme.typography.bodyLarge)
-                Text(text = "To: ${viewModel.emailRecipients}", style = MaterialTheme.typography.bodyLarge)
+                Text(
+                    text = "From: ${viewModel.emailSender}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = "To: ${viewModel.emailRecipients}",
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 if (viewModel.emailCcRecipients.isNotBlank()) {
-                    Text(text = "CC: ${viewModel.emailCcRecipients}", style = MaterialTheme.typography.bodyLarge)
+                    Text(
+                        text = "CC: ${viewModel.emailCcRecipients}",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
                 }
-                Text(text = "Date: ${viewModel.emailReceivedDate}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = "Date: ${viewModel.emailReceivedDate}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
                 Text(text = viewModel.emailSubject, style = MaterialTheme.typography.bodyMedium)
                 Spacer(modifier = Modifier.height(8.dp))
@@ -94,5 +106,5 @@ fun EmailReadScreen(
 fun PreviewEmailDetailScreen() {
     val viewModel = EmailReadViewModel()
     val navController = rememberNavController()
-    EmailReadScreen(viewModel, navController )
+    EmailReadScreen(viewModel, navController)
 }

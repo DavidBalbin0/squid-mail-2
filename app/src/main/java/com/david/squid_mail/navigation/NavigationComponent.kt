@@ -6,9 +6,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.david.squid_mail.screen.CalendarScreen
+import com.david.squid_mail.screen.EmailCompositionScreen
+import com.david.squid_mail.screen.EmailCompositionViewModel
+import com.david.squid_mail.screen.EmailReadScreen
+import com.david.squid_mail.screen.EmailReadViewModel
 import com.david.squid_mail.screen.InboxScreen
+import com.david.squid_mail.screen.InboxViewModel
 import com.david.squid_mail.screen.LoginScreen
 import com.david.squid_mail.screen.LoginViewModel
+import com.david.squid_mail.screen.PreviewEmailDetailScreen
 import com.david.squid_mail.screen.RegistrationScreen
 import com.david.squid_mail.screen.RegistrationViewModel
 import com.david.squid_mail.screen.WelcomeScreen
@@ -26,7 +32,13 @@ fun NavigationComponent(navController: NavHostController) {
          LoginScreen(viewModel = LoginViewModel(), navController)
       }
       composable("inbox"){
-         InboxScreen()
+         InboxScreen(viewModel = InboxViewModel(), navController)
+      }
+      composable("email-details") {
+         EmailReadScreen(viewModel = EmailReadViewModel(), navController)
+      }
+      composable("email-composition") {
+         EmailCompositionScreen(viewModel = EmailCompositionViewModel(), navController)
       }
       composable("calendar"){
          CalendarScreen()

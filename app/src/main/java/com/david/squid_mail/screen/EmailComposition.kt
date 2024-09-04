@@ -23,8 +23,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun EmailComposeScreen(
-    viewModel: EmailComposeViewModel,
+fun EmailCompositionScreen(
+    viewModel: EmailCompositionViewModel,
     navController: NavController
 ) {
     val recipient by viewModel::emailRecipient
@@ -117,9 +117,9 @@ fun EmailComposeScreen(
 @Preview(showBackground = true)
 @Composable
 fun EmailComposeScreenPreview() {
-    val viewModel = EmailComposeViewModel()
+    val viewModel = EmailCompositionViewModel()
 
     val navController = rememberNavController()
 
-    EmailComposeScreen(viewModel = viewModel, navController = navController)
+    EmailCompositionScreen(viewModel = viewModel, navController = navController)
 }

@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class EmailComposeViewModel : ViewModel() {
+class EmailCompositionViewModel : ViewModel() {
 
     // Mutable state to hold the recipient's email address
     var emailRecipient by mutableStateOf("")

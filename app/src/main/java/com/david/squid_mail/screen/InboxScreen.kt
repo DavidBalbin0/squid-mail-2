@@ -1,10 +1,10 @@
 package com.david.squid_mail.screen
 
+import android.icu.text.CaseMap.Fold
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalDrawerSheet
@@ -13,65 +13,60 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.david.squid_mail.R
 import com.david.squid_mail.components.DefaultTopBar
 import com.david.squid_mail.components.DrawerMenu
 import com.david.squid_mail.components.EmailComponent
 import com.david.squid_mail.components.SelectionModeTopBar
-import com.david.squid_mail.model.Email
+import com.david.squid_mail.model.Folder
 import kotlinx.coroutines.launch
 
 @Composable
-fun InboxScreen() {
-    val emails = remember {
-        mutableStateListOf(
-            Email(
-                "1",
-                "Alice",
-                "Meeting Tomorrow",
-                "Don't forget our meeting...",
-                time = "21:45"
-            ),
-            Email("2", "Bob", "Weekly Report", "Please find attached...", time = "21:45"),
-            Email(
-                "3",
-                "Charlie",
-                "Lunch Invitation",
-                "How about lunch tomorrow?...",
-                time = "21:45"
-            ),
-            // Mais e-mails...
-        )
-    }
+fun InboxScreen(
+    viewModel: InboxViewModel,
+    navController: NavController
+) {
+    val emails = viewModel.emails
+    val isSelectionMode by viewModel.isSelectionMode
+    val selectedEmails = viewModel.selectedEmails
 
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    var isSelectionMode by remember { mutableStateOf(false) }
-    val selectedEmails = remember { mutableStateListOf<Email>() }
+
+    val navigationItems = remember {
+        listOf(
+            Folder("1", "amigos"),
+            Folder("1", "familia"),
+            // Adicione mais itens conforme necessário
+        )
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                DrawerMenu {
-                    scope.launch { drawerState.close() }
-                }
+                DrawerMenu(
+                    navigationItems = navigationItems,
+                    onCloseMenu = { scope.launch { drawerState.close() } },
+                    onNavigateTo = { route ->
+                        navController.navigate(route)
+                    }
+                )
             }
         }) {
         Scaffold(
             topBar = {
                 if (isSelectionMode) {
-                    SelectionModeTopBar(selectedCount = selectedEmails.size,
-                        onCancelSelection = {
-                            isSelectionMode = false
-                            selectedEmails.clear()
-                            emails.forEach { it.isSelected.value = false }
-                        })
+                    SelectionModeTopBar(
+                        selectedCount = selectedEmails.size,
+                        onCancelSelection = { viewModel.cancelSelection() }
+                    )
                 } else {
                     DefaultTopBar(unreadEmailsCount = 5, onMenuClick = {
                         scope.launch {
@@ -85,18 +80,18 @@ fun InboxScreen() {
             }
         ) { paddingValues ->
             LazyColumn(contentPadding = paddingValues) {
-                items(emails) {
+                items(emails) { email ->
                     EmailComponent(
-                        email = it,
+                        email = email,
                         onLongClick = {
                             if (!isSelectionMode) {
-                                isSelectionMode = true
+                                viewModel.enterSelectionMode()
                             }
-                            toggleSelection(it, selectedEmails)
+                            viewModel.toggleSelection(email)
                         },
                         onClick = {
                             if (isSelectionMode) {
-                                toggleSelection(it, selectedEmails)
+                                viewModel.toggleSelection(email)
                             } else {
                                 // Ação normal de abrir o e-mail
                             }
@@ -106,23 +101,13 @@ fun InboxScreen() {
             }
         }
     }
-
-
-
 }
-
-private fun toggleSelection(email: Email, selectedEmails: MutableList<Email>) {
-    email.isSelected.value = !email.isSelected.value
-
-    if (email.isSelected.value) {
-        selectedEmails.add(email)
-    } else {
-        selectedEmails.remove(email)
-    }
-}
-
 @Preview(showSystemUi = true)
 @Composable
 fun InboxScreenPreview() {
-    InboxScreen()
+    val viewModel = InboxViewModel()
+    val navController = rememberNavController()
+    InboxScreen(
+        viewModel, navController
+    )
 }
