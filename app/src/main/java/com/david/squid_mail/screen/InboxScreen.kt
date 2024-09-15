@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -24,6 +25,7 @@ import com.david.squid_mail.components.DefaultTopBar
 import com.david.squid_mail.components.DrawerMenu
 import com.david.squid_mail.components.EmailComponent
 import com.david.squid_mail.components.SelectionModeTopBar
+import com.david.squid_mail.model.EmailPreview
 import com.david.squid_mail.model.Folder
 import kotlinx.coroutines.launch
 
@@ -32,7 +34,7 @@ fun InboxScreen(
     viewModel: InboxViewModel,
     navController: NavController
 ) {
-    val emails = viewModel.emails
+    val emailPreviews = viewModel.emails.map { EmailPreview(it) }
     val isSelectionMode by viewModel.isSelectionMode
     val selectedEmails = viewModel.selectedEmails
 
@@ -76,13 +78,20 @@ fun InboxScreen(
                 }
             },
             floatingActionButton = {
-                Icon(Icons.Default.Add, contentDescription = "add mail")
-            }
+                IconButton(
+                    onClick = {
+                        navController.navigate("email-composition")
+                    }
+                ) {
+                    Icon(Icons.Filled.Add, contentDescription = "Compose email")
+                }
+                }
+
         ) { paddingValues ->
             LazyColumn(contentPadding = paddingValues) {
-                items(emails) { email ->
+                items(emailPreviews) { email ->
                     EmailComponent(
-                        email = email,
+                        emailPreview = email,
                         onLongClick = {
                             if (!isSelectionMode) {
                                 viewModel.enterSelectionMode()

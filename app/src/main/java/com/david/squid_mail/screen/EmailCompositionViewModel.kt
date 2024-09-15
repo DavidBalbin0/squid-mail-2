@@ -1,15 +1,24 @@
 package com.david.squid_mail.screen
 
+import android.content.Context
+import androidx.compose.runtime.CompositionContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.david.squid_mail.database.repository.EmailRepository
+import com.david.squid_mail.model.Email
 import kotlinx.coroutines.launch
 
-class EmailCompositionViewModel : ViewModel() {
+class EmailCompositionViewModel(context: Context) : ViewModel() {
 
+
+    val emailRepository = EmailRepository(context)
     // Mutable state to hold the recipient's email address
+
+    val emailSender = "example@gmail.com"
     var emailRecipient by mutableStateOf("")
         private set
 
@@ -52,6 +61,13 @@ class EmailCompositionViewModel : ViewModel() {
             // Launches a coroutine to handle the email sending process asynchronously
             viewModelScope.launch {
                 // Logic to send the email would be placed here
+                emailRepository.insertEmail( Email(
+                    sender = emailSender,
+                    subject = emailSubject,
+                    preview = emailBody,
+                    time = "now",
+//                    recipient = emailRecipient,
+                ))
             }
         }
     }
@@ -85,6 +101,7 @@ class EmailCompositionViewModel : ViewModel() {
 
     // Function to check if an email address is in a valid format
     private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() // Uses Android's pattern matcher to validate the email format
+//        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() // Uses Android's pattern matcher to validate the email format
+        return true
     }
 }
