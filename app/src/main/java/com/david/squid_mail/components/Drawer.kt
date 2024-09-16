@@ -1,6 +1,5 @@
 package com.david.squid_mail.components
 
-import android.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.david.squid_mail.R
 import com.david.squid_mail.model.Folder
 
 @Composable
@@ -72,7 +72,7 @@ fun DrawerMenu(
             }
             items(navigationItems) { item ->
                 MenuItem(
-                    icon = R.drawable.ic_menu_edit,
+                    icon = R.drawable.baseline_folder_24,
                     label = item.name,
                     onClick = {
                         onNavigateTo(item.name)
