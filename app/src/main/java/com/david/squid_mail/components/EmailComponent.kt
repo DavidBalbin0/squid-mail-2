@@ -19,15 +19,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.david.squid_mail.model.Email
+import com.david.squid_mail.model.EmailPreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmailComponent(
-    email: Email,
+    emailPreview: EmailPreview,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {
-    val backgroundColor = if (email.isSelected.value) {
+    val backgroundColor = if (emailPreview.isSelected.value) {
         MaterialTheme.colorScheme.tertiary
     } else {
         MaterialTheme.colorScheme.surface
@@ -51,20 +52,20 @@ fun EmailComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = email.sender + email.isSelected.value,
+                    text = emailPreview.email.sender + emailPreview.isSelected,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = email.time,
+                    text = emailPreview.email.time,
                     fontSize = 14.sp
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = email.subject,
+                text = emailPreview.email.subject,
                 fontSize = 14.sp
             )
         }
@@ -88,13 +89,15 @@ fun EmailComponentPreview() {
     EmailComponent(
         onClick = {},
         onLongClick = {},
-        email = Email(
-            "1",
-            "Alice",
-            "Meeting Tomorrow",
-            "Don't forget our meeting...",
-            isSelected =mutableStateOf(true) ,
-            time = "21:45"
-        )
-    )
+        emailPreview = EmailPreview(
+
+            email = Email(
+                1,
+                "Alice",
+                "Meeting Tomorrow",
+                "Don't forget our meeting...",
+                time = "21:45"
+            ),
+            isSelected = mutableStateOf(true)
+        ))
 }

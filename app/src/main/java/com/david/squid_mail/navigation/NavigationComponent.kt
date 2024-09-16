@@ -1,5 +1,6 @@
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
@@ -38,7 +39,7 @@ fun NavigationComponent(navController: NavHostController) {
          EmailReadScreen(viewModel = EmailReadViewModel(), navController)
       }
       composable("email-composition") {
-         EmailCompositionScreen(viewModel = EmailCompositionViewModel(), navController)
+         EmailCompositionScreen(viewModel = EmailCompositionViewModel(LocalContext.current), navController)
       }
       composable("calendar"){
          CalendarScreen()

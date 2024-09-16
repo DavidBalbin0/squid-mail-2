@@ -2,7 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="LoginScreenPreview">
+      <entry key="EmailComposeScreenPreview">
+        <State />
+      </entry>
+      <entry key="InboxScreenPreview">
+        <State />
+      </entry>
+      <entry key="PreviewEmailDetailScreen">
+        <State />
+      </entry>
+      <entry key="RegistrationScreenPreview">
         <State />
       </entry>
       <entry key="app">
