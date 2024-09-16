@@ -53,7 +53,7 @@ fun EmailComponent(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = emailPreview.email.sender + emailPreview.isSelected,
+                    text = emailPreview.email.sender,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
                 )
