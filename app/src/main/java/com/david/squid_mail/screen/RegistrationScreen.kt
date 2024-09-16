@@ -1,5 +1,6 @@
 package com.david.squid_mail.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -167,7 +168,7 @@ fun RegistrationScreen(
                 viewModel.submitForm(
                     onSuccess = {
                         // Navegar para a próxima tela após o cadastro bem-sucedido
-                        navController.navigate("home") // Ajuste a rota conforme necessário
+                        navController.navigate("login") // Ajuste a rota conforme necessário
                     },
                     onError = { errorMsg ->
                         // Atualizar o estado de erro geral para exibir uma mensagem
@@ -182,6 +183,16 @@ fun RegistrationScreen(
         }
 
         // Placeholder for Error Message
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Já está registrado? Clique aqui para logar.",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable { navController.navigate("login")}
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
 
         if (generalError.isNotEmpty()) {

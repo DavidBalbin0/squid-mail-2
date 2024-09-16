@@ -1,12 +1,15 @@
 package com.david.squid_mail.screen
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import com.david.squid_mail.model.RegisterResponse
+import com.david.squid_mail.model.UserRegister
+import com.david.squid_mail.service.RetrofitFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegistrationViewModel : ViewModel() {
     // Estados dos campos de entrada
@@ -83,16 +86,30 @@ class RegistrationViewModel : ViewModel() {
     // Função para submeter o formulário
     fun submitForm(onSuccess: () -> Unit, onError: (String) -> Unit) {
         if (isFormValid) {
-            // Implementar a lógica de cadastro, como chamada a um repositório ou serviço de API
-            viewModelScope.launch {
-                try {
-                    // Simulação de cadastro bem-sucedido
-                    // Substitua pela lógica real de cadastro
-                    // e.g., repository.register(email, password)
-                    onSuccess()
-                } catch (e: Exception) {
-                    onError(e.message ?: "Erro desconhecido")
-                }
+            try {
+                // Obter instância do serviço Retrofit (instancie Retrofit uma vez e reutilize)
+                val userService = RetrofitFactory().getUserService()
+
+                // Criar o objeto UserRegister com os dados do usuário
+                val call = userService.registerUser(UserRegister(email, email, password))
+
+                // Fazer a chamada usando Retrofit enqueue para chamada assíncrona
+                call.enqueue(object : Callback<RegisterResponse> {
+                    override fun onResponse(call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                        if (response.isSuccessful) {
+                            onSuccess()
+                        } else {
+                            onError("Erro ao cadastrar usuário: ${response.errorBody()?.string() ?: response.message() ?: "Erro desconhecido"}")
+                        }
+                    }
+
+                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                        // Retorna o erro detalhado
+                        onError("Falha ao cadastrar usuário: ${t.localizedMessage}")
+                    }
+                })
+            } catch (e: Exception) {
+                onError("Erro ao cadastrar usuário: ${e.localizedMessage}")
             }
         } else {
             onError("Por favor, corrija os erros no formulário.")
