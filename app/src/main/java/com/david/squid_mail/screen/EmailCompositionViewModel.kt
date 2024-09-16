@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.david.squid_mail.database.repository.EmailRepository
 import com.david.squid_mail.model.Email
 import kotlinx.coroutines.launch
+import java.util.Date
 
 class EmailCompositionViewModel(context: Context) : ViewModel() {
 
@@ -62,11 +63,15 @@ class EmailCompositionViewModel(context: Context) : ViewModel() {
             viewModelScope.launch {
                 // Logic to send the email would be placed here
                 emailRepository.insertEmail( Email(
-                    sender = emailSender,
-                    subject = emailSubject,
-                    preview = emailBody,
-                    time = "now",
-//                    recipient = emailRecipient,
+                    1,
+                    "Alice",
+                    "Meeting Tomorrow",
+                    "Don't forget our meeting...",
+                    "Hi Bob, don't forget our meeting tomorrow at 10am. See you there!",
+                    Date(),
+                    false,
+                    false,
+                    1
                 ))
             }
         }

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.david.squid_mail.model.Email
 import com.david.squid_mail.model.EmailPreview
+import java.util.Date
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -58,10 +59,10 @@ fun EmailComponent(
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = emailPreview.email.time,
-                    fontSize = 14.sp
-                )
+//                Text(
+//                    text = emailPreview.email.time,
+//                    fontSize = 14.sp
+//                )
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -96,7 +97,11 @@ fun EmailComponentPreview() {
                 "Alice",
                 "Meeting Tomorrow",
                 "Don't forget our meeting...",
-                time = "21:45"
+                "Hi Bob, don't forget our meeting tomorrow at 10am. See you there!",
+                Date(),
+                false,
+                false,
+                1
             ),
             isSelected = mutableStateOf(true)
         ))

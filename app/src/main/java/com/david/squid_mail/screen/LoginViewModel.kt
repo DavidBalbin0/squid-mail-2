@@ -1,14 +1,20 @@
 package com.david.squid_mail.screen
 
-import androidx.compose.runtime.MutableState
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.david.squid_mail.model.LoginResponse
+import com.david.squid_mail.model.UserLogin
+import com.david.squid_mail.service.RetrofitFactory
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel() : ViewModel() {
     var email by mutableStateOf("")
         private set
 
@@ -23,6 +29,8 @@ class LoginViewModel : ViewModel() {
 
     var passwordVisible by mutableStateOf(false)
         private set
+
+    var loginErrorMessage by mutableStateOf("")
 
     fun onEmailChange(newEmail: String) {
         email = newEmail
@@ -54,7 +62,7 @@ class LoginViewModel : ViewModel() {
         return email == "test@example.com" && password == "Test@1234"
     }
 
-    fun login() {
+    fun login(onSuccess: (LoginResponse) -> Unit, onError: (String) -> Unit, context: Context){
         // Reset error messages
         emailError = ""
         passwordError = ""
@@ -70,13 +78,33 @@ class LoginViewModel : ViewModel() {
         if (emailError.isEmpty() && passwordError.isEmpty()) {
             // Execute login logic
             viewModelScope.launch {
-                // Example login logic, replace with actual authentication
-                val result = authenticateUser(email, password)
-                if (result) {
-                    // Navigate to the next screen or handle successful login
-                } else {
-                    // Show login error
-                    emailError = "Falha na autenticação. Verifique suas credenciais."
+
+                try {
+                    val userService = RetrofitFactory().getUserService()
+                    val call = userService.loginUser(UserLogin(email, password))
+                    call.enqueue(object : Callback<LoginResponse> {
+                        override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                            if (response.isSuccessful && response.body() != null) {
+                                loginErrorMessage= response.body().toString()
+                                val loginResponse = response.body()!!
+                                val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                                val editor = sharedPreferences.edit()
+                                editor.putString("jwt_token", loginResponse.token)
+                                editor.apply()
+                                onSuccess(loginResponse)
+                            } else {
+                                // Handle login error
+                                loginErrorMessage = "Falha na autenticação. Verifique suas credenciais."
+                            }
+                        }
+
+                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                            // Handle network error
+                            loginErrorMessage = "Erro de rede. Verifique sua conexão."
+                        }
+                    })
+                }catch (e: Exception) {
+                    onError("Erro inesperado: ${e.message}")
                 }
             }
         }

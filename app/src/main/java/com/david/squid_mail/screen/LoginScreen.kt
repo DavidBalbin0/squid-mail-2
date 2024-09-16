@@ -1,5 +1,6 @@
 package com.david.squid_mail.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,6 +40,7 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController){
     val emailError by viewModel::emailError
     val passwordError by viewModel::passwordError
     val passwordVisible by viewModel::passwordVisible
+    var loginErrorMessage by viewModel::loginErrorMessage
 
     Column (
         Modifier
@@ -103,26 +105,37 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController){
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { viewModel.login() },
+            onClick = { viewModel.login(
+                onSuccess = { navController.navigate("inbox") },
+                onError = { loginErrorMessage = it },
+                context = navController.context
+            ) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Login")
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Não é registrado? Clique aqui.",
-//            color = MaterialTheme.colorScheme,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
+
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Placeholder para mensagens de erro futuras.",
-            color = MaterialTheme.colorScheme.error,
+            text = "Não é registrado? Clique aqui.",
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.align(Alignment.Start)
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable { navController.navigate("register") }
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+        if (loginErrorMessage.isNotEmpty()) {
+            Text(
+                text = loginErrorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(start = 16.dp)
+            )
+        }
     }
 
 }

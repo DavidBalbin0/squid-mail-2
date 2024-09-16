@@ -43,9 +43,8 @@ fun InboxScreen(
 
     val navigationItems = remember {
         listOf(
-            Folder("1", "amigos"),
-            Folder("1", "familia"),
-            // Adicione mais itens conforme necessário
+            Folder(1, "Folder", 1),
+            Folder(1, "Folder", 1)
         )
     }
 
