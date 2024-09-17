@@ -179,7 +179,10 @@ fun EmailCompositionScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
-                    onClick = { viewModel.sendEmail() },
+                    onClick = { viewModel.sendEmail(
+                        onSuccess = { navController.popBackStack() },
+                        onError = { /* Handle error */ }
+                    ) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Enviar")
@@ -188,7 +191,10 @@ fun EmailCompositionScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
-                    onClick = { viewModel.saveDraft() },
+                    onClick = { viewModel.saveDraft(
+                        onSuccess = { navController.popBackStack() },
+                        onError = { /* Handle error */ }
+                    ) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Salvar como Rascunho")
