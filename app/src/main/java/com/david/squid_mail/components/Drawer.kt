@@ -40,7 +40,7 @@ fun DrawerMenu(
             .padding(16.dp)
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_menu_close_clear_cancel),
+            painter = painterResource(id = R.drawable.baseline_close_24),
             contentDescription = "Close Menu",
             tint = Color.White,
             modifier = Modifier
@@ -51,7 +51,7 @@ fun DrawerMenu(
 
         LazyColumn {
             item {
-                MenuItem(icon = R.drawable.ic_menu_send, label = "Caixa de Entrada", {})
+                MenuItem(icon = R.drawable.baseline_inbox_24, label = "Caixa de Entrada", {})
                 MenuItem(icon = R.drawable.ic_menu_edit, label = "Rascunhos", {})
                 MenuItem(icon = R.drawable.ic_menu_save, label = "Arquivados" , {})
                 MenuItem(icon = R.drawable.ic_menu_send, label = "Enviados", {})

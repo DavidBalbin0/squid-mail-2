@@ -1,5 +1,6 @@
 package com.david.squid_mail.service
 
+import com.david.squid_mail.model.UserLogin
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -15,4 +16,11 @@ class RetrofitFactory {
     fun getUserService(): UserService {
         return retrofit.create(UserService::class.java)
     }
+}
+
+class UserService {
+    fun loginUser(userLogin: UserLogin): Any {
+        TODO("Not yet implemented")
+    }
+
 }
