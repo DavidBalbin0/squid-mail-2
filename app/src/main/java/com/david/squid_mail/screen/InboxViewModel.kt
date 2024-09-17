@@ -19,8 +19,7 @@ class InboxViewModel : ViewModel() {
             "Hi Bob, don't forget our meeting tomorrow at 10am. See you there!",
             Date(),
             false,
-            false,
-            1
+            false
         ), // Adicione mais e-mails conforme necessário
     )
 

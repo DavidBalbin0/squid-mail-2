@@ -17,10 +17,3 @@ class RetrofitFactory {
         return retrofit.create(UserService::class.java)
     }
 }
-
-class UserService {
-    fun loginUser(userLogin: UserLogin): Any {
-        TODO("Not yet implemented")
-    }
-
-}

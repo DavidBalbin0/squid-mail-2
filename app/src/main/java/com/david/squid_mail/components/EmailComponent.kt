@@ -101,7 +101,6 @@ fun EmailComponentPreview() {
                 Date(),
                 false,
                 false,
-                1
             ),
             isSelected = mutableStateOf(true)
         ))

@@ -12,6 +12,7 @@ import com.david.squid_mail.service.RetrofitFactory
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
+
 import retrofit2.Response
 
 class LoginViewModel() : ViewModel() {
@@ -77,7 +78,7 @@ class LoginViewModel() : ViewModel() {
 
         if (emailError.isEmpty() && passwordError.isEmpty()) {
             // Execute login logic
-            viewModelScope.launch {
+
 
                 try {
                     val userService = RetrofitFactory().getUserService()
@@ -106,7 +107,7 @@ class LoginViewModel() : ViewModel() {
                 }catch (e: Exception) {
                     onError("Erro inesperado: ${e.message}")
                 }
-            }
+
         }
     }
 }

@@ -30,6 +30,8 @@ data class Email(
     var time: Date = Date(),
     val isRead : Boolean = false,
     val isFavorite: Boolean = false,
-
-    val folderId: Long,
+    val isDraft: Boolean = false,
+    val isSpam: Boolean = false,
+    val isArchived: Boolean = false,
+    val folderId: Long? = null,
 )

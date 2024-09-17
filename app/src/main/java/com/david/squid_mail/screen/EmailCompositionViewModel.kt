@@ -63,15 +63,11 @@ class EmailCompositionViewModel(context: Context) : ViewModel() {
             viewModelScope.launch {
                 // Logic to send the email would be placed here
                 emailRepository.insertEmail( Email(
-                    1,
-                    "Alice",
-                    "Meeting Tomorrow",
-                    "Don't forget our meeting...",
-                    "Hi Bob, don't forget our meeting tomorrow at 10am. See you there!",
-                    Date(),
-                    false,
-                    false,
-                    1
+                    0,
+                    emailSender,
+                    emailRecipient,
+                    emailSubject,
+                    emailBody,
                 ))
             }
         }
@@ -82,6 +78,14 @@ class EmailCompositionViewModel(context: Context) : ViewModel() {
         // Launches a coroutine to handle the draft saving process asynchronously
         viewModelScope.launch {
             // Logic to save the draft would be placed here
+            emailRepository.insertEmail( Email(
+                0,
+                emailSender,
+                emailRecipient,
+                emailSubject,
+                emailBody,
+                isDraft = true
+            ))
         }
     }
 
