@@ -7,14 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.david.squid_mail.database.Converters
 import com.david.squid_mail.model.Email
+import com.david.squid_mail.model.Folder
 
-@Database(entities = [Email::class], version = 1)
+@Database(entities = [Email::class, Folder::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class EmailDb : RoomDatabase(){
     abstract fun emailDao(): EmailDao
 
     companion object {
-        const val DB_NAME = "email_db"
+        const val DB_NAME = "app_db"
 
         private lateinit var instance: EmailDb
 

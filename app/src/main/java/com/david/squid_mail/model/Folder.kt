@@ -4,17 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "tb_email",
-    foreignKeys = [
-        ForeignKey(
-            entity = Folder::class,
-            parentColumns = ["id"],
-            childColumns = ["folderId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity(tableName = "tb_folder")
 data class Folder(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,

@@ -1,6 +1,7 @@
 package com.david.squid_mail.database.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.david.squid_mail.database.dao.EmailDb
 import com.david.squid_mail.model.Email
 
@@ -21,11 +22,15 @@ class EmailRepository (context: Context) {
         return emailDao.deleteEmail(email)
     }
 
-    fun findById(id: String): Email {
+    fun findById(id: Long): Email {
         return emailDao.findById(id)
     }
 
     fun findAll(): List<Email> {
         return emailDao.findAll()
+    }
+
+    fun findAllToInbox(): List<Email> {
+        return emailDao.findAllToInbox()
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.david.squid_mail.database.repository.EmailRepository
 import com.david.squid_mail.model.Email
 import kotlinx.coroutines.launch
@@ -57,11 +58,10 @@ class EmailCompositionViewModel(context: Context) : ViewModel() {
     }
 
     // Function to send the email, first validating the input fields
-    fun sendEmail() {
+    fun sendEmail(onSuccess: () -> Unit, onError: (String) -> Unit){
         if (validateEmailFields()) {
             // Launches a coroutine to handle the email sending process asynchronously
-            viewModelScope.launch {
-                // Logic to send the email would be placed here
+            try {
                 emailRepository.insertEmail( Email(
                     0,
                     emailSender,
@@ -69,25 +69,42 @@ class EmailCompositionViewModel(context: Context) : ViewModel() {
                     emailSubject,
                     emailBody,
                 ))
+
+                onSuccess()
+            } catch (e: Exception) {
+                // Handle the exception here
+                e.printStackTrace()
+                -1
+                onError(e.message ?: "Erro ao enviar e-mail")
             }
+
         }
     }
 
     // Function to save the current email as a draft
-    fun saveDraft() {
-        // Launches a coroutine to handle the draft saving process asynchronously
-        viewModelScope.launch {
-            // Logic to save the draft would be placed here
-            emailRepository.insertEmail( Email(
-                0,
-                emailSender,
-                emailRecipient,
-                emailSubject,
-                emailBody,
-                isDraft = true
-            ))
+    fun saveDraft(onSuccess: () -> Unit, onError: (String) -> Unit){
+        if (validateEmailFields()) {
+            try {
+                emailRepository.insertEmail( Email(
+                    0,
+                    emailSender,
+                    emailRecipient,
+                    emailSubject,
+                    emailBody,
+                    isDraft = true
+                ))
+
+                onSuccess()
+            } catch (e: Exception) {
+                // Handle the exception here
+                e.printStackTrace()
+                -1
+                onError(e.message ?: "Erro ao salvar rascunho")
+            }
+
         }
     }
+
 
     // Function to validate the email fields (recipient and subject)
     private fun validateEmailFields(): Boolean {
