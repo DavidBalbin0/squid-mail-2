@@ -47,3 +47,8 @@ fun NavigationComponent(navController: NavHostController) {
       
    }
 }
+
+@Composable
+fun EmailCompositionScreen(viewModel: EmailCompositionViewModel, navController: NavHostController) {
+   TODO("Not yet implemented")
+}
