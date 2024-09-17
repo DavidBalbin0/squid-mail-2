@@ -1,27 +1,26 @@
 package com.david.squid_mail.screen
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import com.david.squid_mail.database.repository.EmailRepository
 import com.david.squid_mail.model.Email
 import com.david.squid_mail.model.EmailPreview
 import java.util.Date
 
 
-class InboxViewModel : ViewModel() {
+class InboxViewModel(context: Context) : ViewModel() {
 
-    val emails = mutableStateListOf(
-        Email(
-            1,
-            "Alice",
-            "Meeting Tomorrow",
-            "Don't forget our meeting...",
-            "Hi Bob, don't forget our meeting tomorrow at 10am. See you there!",
-            Date(),
-            false,
-            false
-        ), // Adicione mais e-mails conforme necessário
-    )
+    val emailRepository = EmailRepository(context)
+    var _emails = MutableLiveData<List<Email>>()
+    val emailPreviews: LiveData<List<EmailPreview>> = _emails.map { emails ->
+        emails.map { EmailPreview(it) }
+    }
 
     val isSelectionMode = mutableStateOf(false)
     val selectedEmails = mutableStateListOf<EmailPreview>()
@@ -44,5 +43,19 @@ class InboxViewModel : ViewModel() {
 
     fun enterSelectionMode() {
         isSelectionMode.value = true
+    }
+
+    fun fetchEmails() {
+        val emailList = emailRepository.findAllToInbox()
+        _emails.value = emailList
+        Log.i("InboxViewModel", "fetchEmails" + _emails.value?.size)
+    }
+
+    fun archiveSelectedEmails() {
+        selectedEmails.forEach { preview ->
+            preview.email.isArchived = true
+            emailRepository.updateEmail(preview.email) // Atualiza o email no banco de dados
+        }
+        cancelSelection()
     }
 }

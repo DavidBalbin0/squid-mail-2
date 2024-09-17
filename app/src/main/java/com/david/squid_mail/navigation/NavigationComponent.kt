@@ -22,7 +22,10 @@ import com.david.squid_mail.screen.WelcomeScreen
 
 @Composable
 fun NavigationComponent(navController: NavHostController) {
-   NavHost(navController = navController, startDestination = "register"){
+   val context = LocalContext.current
+   val appContext = context.applicationContext
+
+   NavHost(navController = navController, startDestination = "inbox"){
       composable("welcome"){
          WelcomeScreen(navController)
       }
@@ -33,13 +36,13 @@ fun NavigationComponent(navController: NavHostController) {
          LoginScreen(viewModel = LoginViewModel(), navController)
       }
       composable("inbox"){
-         InboxScreen(viewModel = InboxViewModel(), navController)
+         InboxScreen(viewModel = InboxViewModel(appContext), navController)
       }
       composable("email-details") {
          EmailReadScreen(viewModel = EmailReadViewModel(), navController)
       }
       composable("email-composition") {
-         EmailCompositionScreen(viewModel = EmailCompositionViewModel(LocalContext.current), navController)
+         EmailCompositionScreen(viewModel = EmailCompositionViewModel(appContext), navController)
       }
       composable("calendar"){
          CalendarScreen()

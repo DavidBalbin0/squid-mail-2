@@ -1,6 +1,7 @@
 package com.david.squid_mail.screen
 
 import android.icu.text.CaseMap.Fold
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -11,11 +12,15 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -34,7 +39,13 @@ fun InboxScreen(
     viewModel: InboxViewModel,
     navController: NavController
 ) {
-    val emailPreviews = viewModel.emails.map { EmailPreview(it) }
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchEmails()
+    }
+
+    val emailPreviews by viewModel.emailPreviews.observeAsState(initial = emptyList())
+    Log.i("InboxScreen", "emailPreviews: fetch ${emailPreviews.size}")
     val isSelectionMode by viewModel.isSelectionMode
     val selectedEmails = viewModel.selectedEmails
 
@@ -113,8 +124,9 @@ fun InboxScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun InboxScreenPreview() {
-    val viewModel = InboxViewModel()
     val navController = rememberNavController()
+    val viewModel = InboxViewModel(LocalContext.current)
+
     InboxScreen(
         viewModel, navController
     )
