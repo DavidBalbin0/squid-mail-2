@@ -22,7 +22,7 @@ import com.david.squid_mail.screen.WelcomeScreen
 
 @Composable
 fun NavigationComponent(navController: NavHostController) {
-   NavHost(navController = navController, startDestination = "register"){
+   NavHost(navController = navController, startDestination = "inbox"){
       composable("welcome"){
          WelcomeScreen(navController)
       }

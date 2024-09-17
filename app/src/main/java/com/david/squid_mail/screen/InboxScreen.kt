@@ -14,8 +14,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -29,11 +32,16 @@ import com.david.squid_mail.model.EmailPreview
 import com.david.squid_mail.model.Folder
 import kotlinx.coroutines.launch
 
+
 @Composable
 fun InboxScreen(
+
     viewModel: InboxViewModel,
     navController: NavController
 ) {
+
+    
+
     val emailPreviews = viewModel.emails.map { EmailPreview(it) }
     val isSelectionMode by viewModel.isSelectionMode
     val selectedEmails = viewModel.selectedEmails
@@ -110,6 +118,8 @@ fun InboxScreen(
         }
     }
 }
+
+
 @Preview(showSystemUi = true)
 @Composable
 fun InboxScreenPreview() {
