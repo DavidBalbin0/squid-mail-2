@@ -52,14 +52,14 @@ fun DrawerMenu(
         LazyColumn {
             item {
                 MenuItem(icon = R.drawable.baseline_inbox_24, label = "Caixa de Entrada", {})
-                MenuItem(icon = R.drawable.ic_menu_edit, label = "Rascunhos", {})
-                MenuItem(icon = R.drawable.ic_menu_save, label = "Arquivados" , {})
-                MenuItem(icon = R.drawable.ic_menu_send, label = "Enviados", {})
-                MenuItem(icon = R.drawable.btn_star_big_off, label = "Favoritos", {})
-                MenuItem(icon = R.drawable.ic_menu_delete, label = "Deletados", {})
-                MenuItem(icon = R.drawable.ic_menu_agenda, label = "Spam", {})
-                MenuItem(icon = R.drawable.ic_menu_preferences, label = "Configurações", {})
-                MenuItem(icon = R.drawable.ic_menu_today, label = "Calendário", {})
+                MenuItem(icon = R.drawable.baseline_draw_24, label = "Rascunhos", {})
+                MenuItem(icon = R.drawable.baseline_folder_24, label = "Arquivados" , {})
+                MenuItem(icon = R.drawable.baseline_send_24, label = "Enviados", {})
+                MenuItem(icon = R.drawable.baseline_star_border_24, label = "Favoritos", {})
+                MenuItem(icon = R.drawable.baseline_delete_24, label = "Deletados", {})
+                MenuItem(icon = R.drawable.baseline_dangerous_24, label = "Spam", {})
+                MenuItem(icon = R.drawable.baseline_settings_24, label = "Configurações", {})
+                MenuItem(icon = R.drawable.baseline_calendar_today_24, label = "Calendário", {})
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
