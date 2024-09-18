@@ -4,6 +4,7 @@ import android.app.Dialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +37,6 @@ import com.david.squid_mail.model.Folder
 fun DrawerMenu(
     navigationItems: List<Folder>,
     onCloseMenu: () -> Unit,
-    onNavigateTo: (String) -> Unit,
 
 ) {
 
@@ -71,20 +71,24 @@ fun DrawerMenu(
                 MenuItem(icon = R.drawable.baseline_calendar_today_24, label = "Calendário", {})
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = "Pastas",
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+                Row {
+                    Text(
+                        text = "Pastas",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Icon(painter = painterResource(id = R.drawable.baseline_create_new_folder_24), contentDescription = "add a folder")
+                }
+
             }
             items(navigationItems) { item ->
                 MenuItem(
                     icon = R.drawable.baseline_folder_24,
                     label = item.name,
                     onClick = {
-                        onNavigateTo(item.name)
+
                         onCloseMenu()
                     }
                 )
