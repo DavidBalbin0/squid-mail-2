@@ -1,9 +1,11 @@
 package com.david.squid_mail.database.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.david.squid_mail.database.dao.EmailDb
 import com.david.squid_mail.model.Email
+import com.david.squid_mail.model.FolderType
 
 class EmailRepository (context: Context) {
 
@@ -26,8 +28,27 @@ class EmailRepository (context: Context) {
         return emailDao.findById(id)
     }
 
-    fun findAll(): List<Email> {
-        return emailDao.findAll()
+    fun findAllByFolderType(folderType: FolderType, folderId: Long?): List<Email> {
+        return when(folderType) {
+            FolderType.INBOX -> emailDao.findAllToInbox()
+            FolderType.SENT -> emailDao.findAllToSent(0)
+            FolderType.DRAFTS -> emailDao.findAllToDrafts()
+            FolderType.ARCHIVED -> emailDao.findAllToArchived()
+            FolderType.FAVORITES -> emailDao.findAllToFavorites()
+            FolderType.SPAM -> emailDao.findAllToSpam()
+            FolderType.TRASH -> emailDao.findAllToTrash()
+            FolderType.OTHER -> findAllToOther(folderId)
+
+        }
+    }
+
+    private fun findAllToOther(folderId: Long?): List<Email> {
+        return if (folderId == null) {
+            Log.e("EmailRepository", "FolderId is null")
+            emptyList()
+        } else {
+            emailDao.findAllToOther(folderId)
+        }
     }
 
     fun findAllToInbox(): List<Email> {

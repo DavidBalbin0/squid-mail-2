@@ -33,5 +33,6 @@ data class Email(
     val isDraft: Boolean = false,
     val isSpam: Boolean = false,
     var isArchived: Boolean = false,
-    val folderId: Long? = null,
+    var isTrash: Boolean = false,
+    var folderId: Long? = null,
 )

@@ -18,9 +18,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun SettingsScreen(onCloseClick: () -> Unit) {
+fun SettingsScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,7 +37,7 @@ fun SettingsScreen(onCloseClick: () -> Unit) {
                 contentDescription = null,
                 tint = Color(0xFF254D70), // Dark blue color
                 modifier = Modifier
-                    .clickable { onCloseClick() }
+                    .clickable {navController.popBackStack() }
                     .size(24.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
@@ -148,12 +149,12 @@ fun SubMenuItemSettings(title: String) {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewSettingsScreen() {
-    MaterialTheme {
-        Surface {
-            SettingsScreen(onCloseClick = {})
-        }
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewSettingsScreen() {
+//    MaterialTheme {
+//        Surface {
+//            SettingsScreen(onCloseClick = {})
+//        }
+//    }
+//}

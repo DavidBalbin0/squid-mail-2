@@ -14,14 +14,17 @@ interface FolderDao {
     fun insertFolder(folder: Folder): Long
 
     @Update
-    fun updateFolder(folder: Folder): Long
+    fun updateFolder(folder: Folder): Int
 
     @Delete
-    fun deleteFolder(folder: Folder): Long
+    fun deleteFolder(folder: Folder): Int
 
     @Query("SELECT * FROM tb_folder WHERE id = :id")
     fun findById(id: Long): Folder
 
     @Query("SELECT * FROM tb_folder")
     fun findAll(): List<Folder>
+
+    @Query("SELECT * FROM tb_folder WHERE name = :name LIMIT 1")
+    fun findByName(name: String): Folder?
 }

@@ -1,6 +1,7 @@
 package com.david.squid_mail.components
 
 import android.app.Dialog
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -30,13 +31,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.david.squid_mail.R
 import com.david.squid_mail.model.Folder
 
 @Composable
 fun DrawerMenu(
-    navigationItems: List<Folder>,
+    folders: List<Folder>,
     onCloseMenu: () -> Unit,
+    navController: NavController
 
 ) {
 
@@ -60,15 +63,27 @@ fun DrawerMenu(
 
         LazyColumn {
             item {
-                MenuItem(icon = R.drawable.baseline_inbox_24, label = "Caixa de Entrada", {})
-                MenuItem(icon = R.drawable.baseline_draw_24, label = "Rascunhos", {})
-                MenuItem(icon = R.drawable.baseline_folder_24, label = "Arquivados" , {})
-                MenuItem(icon = R.drawable.baseline_send_24, label = "Enviados", {})
-                MenuItem(icon = R.drawable.baseline_star_border_24, label = "Favoritos", {})
-                MenuItem(icon = R.drawable.baseline_delete_24, label = "Deletados", {})
-                MenuItem(icon = R.drawable.baseline_dangerous_24, label = "Spam", {})
-                MenuItem(icon = R.drawable.baseline_settings_24, label = "Configurações", {})
-                MenuItem(icon = R.drawable.baseline_calendar_today_24, label = "Calendário", {})
+                MenuItem(icon = R.drawable.baseline_inbox_24, label = "Caixa de Entrada") {
+                    navController.navigate(
+                        "inbox"
+                    )
+                }
+                MenuItem(icon = R.drawable.baseline_draw_24, label = "Rascunhos"){
+                    navController.navigate(
+                        "drafts"
+                    )
+                }
+                MenuItem(icon = R.drawable.baseline_folder_24, label = "Arquivados" ){
+                    navController.navigate(
+                        "archived"
+                    )
+                }
+                MenuItem(icon = R.drawable.baseline_send_24, label = "Enviados", {navController.navigate("sent")})
+                MenuItem(icon = R.drawable.baseline_star_border_24, label = "Favoritos", {navController.navigate("favorites")})
+                MenuItem(icon = R.drawable.baseline_delete_24, label = "Deletados", {navController.navigate("deleted")})
+                MenuItem(icon = R.drawable.baseline_dangerous_24, label = "Spam", {navController.navigate("spam")})
+                MenuItem(icon = R.drawable.baseline_settings_24, label = "Configurações", {navController.navigate("settings")})
+                MenuItem(icon = R.drawable.baseline_calendar_today_24, label = "Calendário", {navController.navigate("calendar")})
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Row {
@@ -79,16 +94,24 @@ fun DrawerMenu(
                         fontSize = 16.sp
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Icon(painter = painterResource(id = R.drawable.baseline_create_new_folder_24), contentDescription = "add a folder")
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_create_new_folder_24),
+                        contentDescription = "add a folder",
+                        modifier = Modifier.clickable {
+                            // Open dialog to add a folder
+                            navController.navigate("folder")
+                        }
+                    )
                 }
 
             }
-            items(navigationItems) { item ->
+            items(folders) { item ->
                 MenuItem(
                     icon = R.drawable.baseline_folder_24,
                     label = item.name,
                     onClick = {
-
+                        Log.i("DrawerMenu", "Folder ${item.id} clicked")
+                        navController.navigate("dynamic/${item.id}")
                         onCloseMenu()
                     }
                 )

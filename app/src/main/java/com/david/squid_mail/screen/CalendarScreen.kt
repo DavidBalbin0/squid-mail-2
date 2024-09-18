@@ -1,7 +1,8 @@
 package com.david.squid_mail.screen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
@@ -32,6 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.david.squid_mail.database.repository.EventRepository
+import com.david.squid_mail.model.Event
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -39,15 +44,17 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarScreen() {
     val currentMonth = remember { mutableStateOf(YearMonth.now()) }
     val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
-    val events = remember { mutableStateOf(mutableMapOf<LocalDate, MutableList<String>>()) }
     val showDialog = remember { mutableStateOf(false) }
     val newEventText = remember { mutableStateOf(TextFieldValue()) }
     val editingEvent = remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
+
+    val eventRepository = EventRepository(LocalContext.current)
 
     Column(
         modifier = Modifier
@@ -133,7 +140,8 @@ fun CalendarScreen() {
                     val dayOfMonth = week * 7 + dayOfWeek.value - firstDayOfMonth.value + 1
                     if (dayOfMonth in 1..daysInMonth) {
                         val date = LocalDate.of(currentMonth.value.year, currentMonth.value.month, dayOfMonth)
-                        val hasEvent = events.value[date]?.isNotEmpty() == true
+                        val eventsForDate = eventRepository.getEventsForDate(date).collectAsState(initial = emptyList())
+                        val hasEvent = eventsForDate.value.isNotEmpty()
 
                         Box(
                             modifier = Modifier
@@ -145,8 +153,7 @@ fun CalendarScreen() {
                                     selectedDate.value = date
                                     showDialog.value = true
                                 },
-                                contentAlignment = Alignment.Center,
-//                            horizontalAlignment = Alignment.CenterHorizontally
+                            contentAlignment = Alignment.Center,
                         ) {
                             Text(
                                 text = dayOfMonth.toString(),
@@ -193,21 +200,23 @@ fun CalendarScreen() {
                                     .background(Color.White)
                                     .padding(8.dp)
                             )
-                            events.value[date]?.forEachIndexed { index, event ->
+
+                            val eventsForDate = eventRepository.getEventsForDate(date).collectAsState(initial = emptyList())
+                            eventsForDate.value.forEachIndexed { index, event ->
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(top = 8.dp),
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
-                                    Text(text = event)
+                                    Text(text = event.description)
                                     Row {
                                         Text(
                                             text = "Editar",
                                             modifier = Modifier
                                                 .clickable {
-                                                    newEventText.value = TextFieldValue(event)
-                                                    editingEvent.value = event
+                                                    newEventText.value = TextFieldValue(event.description)
+                                                    editingEvent.value = event.description
                                                 }
                                                 .padding(end = 8.dp)
                                         )
@@ -215,7 +224,9 @@ fun CalendarScreen() {
                                             text = "Excluir",
                                             modifier = Modifier
                                                 .clickable {
-                                                    events.value[date]?.removeAt(index)
+                                                    scope.launch {
+                                                        eventRepository.deleteEvent(event.id)
+                                                    }
                                                 }
                                         )
                                     }
@@ -228,12 +239,19 @@ fun CalendarScreen() {
                             onClick = {
                                 val text = newEventText.value.text
                                 if (text.isNotBlank()) {
-                                    if (editingEvent.value != null) {
-                                        events.value[date]?.remove(editingEvent.value)
+                                    val newEvent = Event(description = text, date = date)
+                                    scope.launch {
+                                        var oldEvent: Event? = null
+                                        eventRepository.getEventsForDate(date).collect { events ->
+                                            oldEvent = events.firstOrNull { it.description == editingEvent.value }
+                                        }
+                                        if (editingEvent.value != null && oldEvent != null) {
+                                            eventRepository.deleteEvent(oldEvent!!.id)
+                                        }
+                                        eventRepository.insertEvent(newEvent)
+                                        newEventText.value = TextFieldValue()
+                                        editingEvent.value = null
                                     }
-                                    events.value.getOrPut(date) { mutableListOf() }.add(text)
-                                    newEventText.value = TextFieldValue()
-                                    editingEvent.value = null
                                 }
                                 showDialog.value = false
                             }
@@ -252,6 +270,7 @@ fun CalendarScreen() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview(showSystemUi = true)
 fun CalendarScreenPreview(){

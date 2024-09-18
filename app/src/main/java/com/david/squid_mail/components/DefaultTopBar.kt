@@ -21,14 +21,16 @@ import java.lang.reflect.Modifier
 @Composable
 fun DefaultTopBar(
     unreadEmailsCount: Int,
-    onMenuClick: () -> Unit
+    onMenuClick: () -> Unit,
+    folderName: String
+
 ) {
     TopAppBar(
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Inbox") // Nome da página
+                Text(folderName) // Nome da página
 //                Spacer(modifier = Modifier.width(8.dp))
                 if (unreadEmailsCount > 0) {
                     Text(

@@ -27,5 +27,23 @@ interface EmailDao {
 
     @Query("SELECT * FROM tb_email WHERE isDraft = 0 AND isArchived = 0 AND isSpam = 0")
     fun findAllToInbox(): List<Email>
+    @Query("SELECT * FROM tb_email WHERE id = :id")
+    fun findAllToSent(id :Long): List<Email>
+    @Query("SELECT * FROM tb_email WHERE isDraft = 1")
+    fun findAllToDrafts(): List<Email>
+    @Query("SELECT * FROM tb_email WHERE isArchived = 1")
+    fun findAllToArchived(): List<Email>
+
+    @Query("SELECT * FROM tb_email WHERE isFavorite = 1")
+    fun findAllToFavorites(): List<Email>
+
+    @Query("SELECT * FROM tb_email WHERE isSpam = 1")
+    fun findAllToSpam(): List<Email>
+
+    @Query("SELECT * FROM tb_email WHERE isTrash = 1")
+    fun findAllToTrash(): List<Email>
+
+    @Query("SELECT * FROM tb_email WHERE folderId = :folderId")
+    fun findAllToOther(folderId: Long): List<Email>
 }
 
