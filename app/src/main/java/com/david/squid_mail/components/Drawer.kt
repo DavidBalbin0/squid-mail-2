@@ -37,10 +37,10 @@ fun DrawerMenu(
     navigationItems: List<Folder>,
     onCloseMenu: () -> Unit,
     onNavigateTo: (String) -> Unit,
-    onCreateFolder: (String) -> Unit // Função para criar nova pasta
+//    onCreateFolder: (String) -> Unit // Função para criar nova pasta
 ) {
-    var showCreateFolderDialog by remember { mutableStateOf(false) } // Estado do modal
-    var newFolderName by remember { mutableStateOf("") } // Nome da nova pasta
+//    var showCreateFolderDialog by remember { mutableStateOf(false) } // Estado do modal
+//    var newFolderName by remember { mutableStateOf("") } // Nome da nova pasta
 
     Column(
         modifier = Modifier
@@ -81,9 +81,9 @@ fun DrawerMenu(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Button(onClick = { showCreateFolderDialog = true }) {
-                    Text("Criar Nova Pasta")
-                }
+//                Button(onClick = { showCreateFolderDialog = true }) {
+//                    Text("Criar Nova Pasta")
+//                }
             }
             items(navigationItems) { item ->
                 MenuItem(
@@ -101,40 +101,40 @@ fun DrawerMenu(
         Spacer(modifier = Modifier.weight(1f))
 
 //         Dialog para criar nova pasta
-        if (showCreateFolderDialog) {
-            AlertDialog(
-                onDismissRequest = { showCreateFolderDialog = false },
-                title = { Text(text = "Criar Nova Pasta") },
-                text = {
-                    Column {
-                        Text(text = "Digite o nome da nova pasta:")
-                        Spacer(modifier = Modifier.height(8.dp))
-                        TextField(
-                            value = newFolderName,
-                            onValueChange = { newFolderName = it },
-                            placeholder = { Text(text = "Nome da Pasta") }
-                        )
-                    }
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            if (newFolderName.isNotEmpty()) {
-                                onCreateFolder(newFolderName) // Chama a função para criar a pasta
-                                showCreateFolderDialog = false // Fecha o modal
-                            }
-                        }
-                    ) {
-                        Text(text = "Criar")
-                    }
-                },
-                dismissButton = {
-                    Button(onClick = { showCreateFolderDialog = false }) {
-                        Text(text = "Cancelar")
-                    }
-                }
-            )
-        }
+//        if (showCreateFolderDialog) {
+//            AlertDialog(
+//                onDismissRequest = { showCreateFolderDialog = false },
+//                title = { Text(text = "Criar Nova Pasta") },
+//                text = {
+//                    Column {
+//                        Text(text = "Digite o nome da nova pasta:")
+//                        Spacer(modifier = Modifier.height(8.dp))
+//                        TextField(
+//                            value = newFolderName,
+//                            onValueChange = { newFolderName = it },
+//                            placeholder = { Text(text = "Nome da Pasta") }
+//                        )
+//                    }
+//                },
+//                confirmButton = {
+//                    Button(
+//                        onClick = {
+//                            if (newFolderName.isNotEmpty()) {
+//                                onCreateFolder(newFolderName) // Chama a função para criar a pasta
+//                                showCreateFolderDialog = false // Fecha o modal
+//                            }
+//                        }
+//                    ) {
+//                        Text(text = "Criar")
+//                    }
+//                },
+//                dismissButton = {
+//                    Button(onClick = { showCreateFolderDialog = false }) {
+//                        Text(text = "Cancelar")
+//                    }
+//                }
+//            )
+//        }
 
     }
 
