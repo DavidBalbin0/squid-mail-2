@@ -18,3 +18,11 @@ val ButtonWhite = Color(0xFFFFFFFF)
 //Logo
 
 val LogoColor = Color(0xff1C4670)
+
+//Text Color
+
+val TextWhite = Color.White
+
+//Bg Color
+
+val BgWhite = Color.White
