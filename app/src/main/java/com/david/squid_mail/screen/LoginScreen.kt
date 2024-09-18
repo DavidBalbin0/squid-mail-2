@@ -61,7 +61,7 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController){
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFF278AB0)
     ){
-
+        // commit
         Column (
             Modifier
                 .fillMaxSize()
