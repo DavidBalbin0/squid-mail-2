@@ -1,13 +1,16 @@
 package com.david.squid_mail.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
@@ -24,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.david.squid_mail.R
+import com.david.squid_mail.ui.theme.LogoColor
+import java.util.jar.Attributes.Name
 
 @Composable
 fun RegistrationScreen(
@@ -41,6 +47,7 @@ fun RegistrationScreen(
     navController: NavController
 ) {
     val email by viewModel::email
+    val name by viewModel::name
     val password by viewModel::password
     val confirmPassword by viewModel::confirmPassword
     val passwordVisible by viewModel::passwordVisible
@@ -51,6 +58,28 @@ fun RegistrationScreen(
 
     var generalError by remember { mutableStateOf("") }
 
+    Spacer(modifier = Modifier.height(500.dp))
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFF278AB0))
+            .padding(bottom = 30.dp),
+        horizontalArrangement = Arrangement.Center, // Centraliza o conteúdo horizontalmente
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        Icon(
+            painter = painterResource(id = R.drawable.octa_logo),
+            contentDescription = "Icon Centered",
+            tint = LogoColor,
+            modifier = Modifier
+                .size(150.dp)
+                .padding(top = 50.dp) // Adiciona 16.dp de espaçamento na parte superior
+        )
+
+    }
+
 
     Column(
         modifier = Modifier
@@ -59,13 +88,28 @@ fun RegistrationScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+
+
         Text(
-            text = "Cadastro",
+            text = "Crie sua conta",
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
         // Email Field
+        OutlinedTextField(
+            value = name,
+            onValueChange = { viewModel.onNameChange(it) }, // Ajustado para capturar mudanças no nome
+            label = { Text("Insira seu nome") },
+            modifier = Modifier.fillMaxWidth(),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text, // Altere para KeyboardType.Text
+                imeAction = ImeAction.Next
+            )
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
             value = email,
             onValueChange = { viewModel.onEmailChange(it)},
@@ -190,7 +234,7 @@ fun RegistrationScreen(
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
-                .clickable { navController.navigate("login")}
+                .clickable { navController.navigate("login") }
         )
 
         Spacer(modifier = Modifier.height(16.dp))

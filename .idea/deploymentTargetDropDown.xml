@@ -2,16 +2,16 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="EmailComposeScreenPreview">
-        <State />
-      </entry>
       <entry key="InboxScreenPreview">
         <State />
       </entry>
-      <entry key="MainActivity">
+      <entry key="LoginScreenPreview">
         <State />
       </entry>
       <entry key="RegistrationScreenPreview">
+        <State />
+      </entry>
+      <entry key="WelcomeScreenPreview">
         <State />
       </entry>
       <entry key="app">
