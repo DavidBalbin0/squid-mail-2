@@ -73,6 +73,7 @@ fun RegistrationScreen(
             painter = painterResource(id = R.drawable.octa_logo),
             contentDescription = "Icon Centered",
             tint = LogoColor,
+            //alteraçao de tamanho
             modifier = Modifier
                 .size(150.dp)
                 .padding(top = 50.dp) // Adiciona 16.dp de espaçamento na parte superior
