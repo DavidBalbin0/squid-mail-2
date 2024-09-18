@@ -59,7 +59,8 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController){
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFF278AB0)
+//        color = Color(0xFF278AB0)
+        color = MaterialTheme.colorScheme.background
     ){
         // commit
         Column (
@@ -206,3 +207,4 @@ fun LoginScreenPreview() {
     val navController = rememberNavController()
     LoginScreen(viewModel = viewModel, navController = navController)
 }
+
