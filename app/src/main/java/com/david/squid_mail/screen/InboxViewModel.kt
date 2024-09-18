@@ -46,7 +46,7 @@ class InboxViewModel(context: Context) : ViewModel() {
     }
 
     fun fetchEmails() {
-        val emailList = emailRepository.findAllToInbox()
+        val emailList = emailRepository.findAll()
         _emails.value = emailList
         Log.i("InboxViewModel", "fetchEmails" + _emails.value?.size)
     }
@@ -54,8 +54,21 @@ class InboxViewModel(context: Context) : ViewModel() {
     fun archiveSelectedEmails() {
         selectedEmails.forEach { preview ->
             preview.email.isArchived = true
-            emailRepository.updateEmail(preview.email) // Atualiza o email no banco de dados
+            emailRepository.updateEmail(preview.email)
         }
         cancelSelection()
+    }
+
+    fun markAsReadSelectedEmails() {
+        selectedEmails.forEach { preview ->
+            preview.email.isRead = true
+            emailRepository.updateEmail(preview.email)
+        }
+        cancelSelection()
+    }
+
+    fun toggleFavorite(email: Email) {
+        email.isFavorite = !email.isFavorite
+        emailRepository.updateEmail(email) // Atualiza o email no banco de dados
     }
 }

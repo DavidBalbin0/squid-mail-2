@@ -7,12 +7,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,10 +27,12 @@ import java.util.Date
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmailComponent(
-    emailPreview: Int,
+    emailPreview: EmailPreview,
     onClick: () -> Unit,
-    onLongClick: () -> Unit
+    onLongClick: () -> Unit,
+    onStarClick: () -> Unit
 ) {
+
     val backgroundColor = if (emailPreview.isSelected.value) {
         MaterialTheme.colorScheme.tertiary
     } else {
@@ -76,8 +80,9 @@ fun EmailComponent(
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
             Icon(
-                painter = painterResource(id = android.R.drawable.btn_star_big_off),
-                contentDescription = "Star"
+                painter = painterResource(id = if (emailPreview.email.isFavorite) android.R.drawable.btn_star_big_on else android.R.drawable.btn_star_big_off),
+                contentDescription = "Star",
+                modifier = Modifier.clickable { onStarClick() }
             )
         }
     }
@@ -90,6 +95,7 @@ fun EmailComponentPreview() {
     EmailComponent(
         onClick = {},
         onLongClick = {},
+        onStarClick = {},
         emailPreview = EmailPreview(
 
             email = Email(
@@ -103,5 +109,6 @@ fun EmailComponentPreview() {
                 false,
             ),
             isSelected = mutableStateOf(true)
-        ))
+        )
+    )
 }
