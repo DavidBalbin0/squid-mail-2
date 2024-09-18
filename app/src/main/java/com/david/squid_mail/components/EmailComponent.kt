@@ -25,7 +25,7 @@ import java.util.Date
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun EmailComponent(
-    emailPreview: EmailPreview,
+    emailPreview: Int,
     onClick: () -> Unit,
     onLongClick: () -> Unit
 ) {

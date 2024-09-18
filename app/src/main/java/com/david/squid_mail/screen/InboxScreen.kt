@@ -1,8 +1,6 @@
 package com.david.squid_mail.screen
 
-import android.icu.text.CaseMap.Fold
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.DrawerValue
@@ -14,13 +12,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.david.squid_mail.R
@@ -39,8 +33,6 @@ fun InboxScreen(
     viewModel: InboxViewModel,
     navController: NavController
 ) {
-
-    
 
     val emailPreviews = viewModel.emails.map { EmailPreview(it) }
     val isSelectionMode by viewModel.isSelectionMode
