@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SelectionModeTopBar(selectedCount: Int, onCancelSelection: () -> Unit) {
+fun SelectionModeTopBar(selectedCount: Int, onCancelSelection: () -> Unit, onArchive: () -> Unit, onMarkAsRead: () -> Unit, onMoveToFolder: () -> Unit ) {
     TopAppBar(
         title = { Text("$selectedCount selected") },
         navigationIcon = {
@@ -28,12 +28,12 @@ fun SelectionModeTopBar(selectedCount: Int, onCancelSelection: () -> Unit) {
                 Icon(Icons.Default.AddCircle, contentDescription = "Move to folder")
             }
             // Botão de arquivar
-            IconButton(onClick = { /* Archive action */ }) {
+            IconButton(onClick = { onArchive() }) {
                 Icon(Icons.Default.Email, contentDescription = "Archive")
             }
             // Botão de marcar como lido/não lido
-            IconButton(onClick = { /* Mark as read/unread */ }) {
-                Icon(Icons.Default.MailOutline, contentDescription = "Mark as unread")
+            IconButton(onClick = { onMarkAsRead}) {
+                Icon(Icons.Default.MailOutline, contentDescription = "Mark as read")
             }
         }
     )
