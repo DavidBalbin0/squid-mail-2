@@ -33,7 +33,7 @@ fun NavigationComponent(navController: NavHostController) {
          LoginScreen(viewModel = LoginViewModel(), navController)
       }
       composable("inbox"){
-         InboxScreen(viewModel = InboxViewModel(), navController)
+//         InboxScreen(viewModel = InboxViewModel(), navController)
       }
       composable("email-details") {
          EmailReadScreen(viewModel = EmailReadViewModel(), navController)

@@ -65,6 +65,7 @@ fun EmailComponent(
                 Spacer(modifier = Modifier.weight(1f))
 //                Text(
 //                    text = emailPreview.email.time,
+//                    text = "10h40", // teste
 //                    fontSize = 14.sp
 //                )
             }
@@ -79,6 +80,10 @@ fun EmailComponent(
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.align(Alignment.CenterVertically)
         ) {
+            Text(
+                text = "10h40",  // teste
+                fontSize = 14.sp
+            )
             Icon(
                 painter = painterResource(id = if (emailPreview.email.isFavorite) android.R.drawable.btn_star_big_on else android.R.drawable.btn_star_big_off),
                 contentDescription = "Star",
@@ -104,6 +109,7 @@ fun EmailComponentPreview() {
                 "Meeting Tomorrow",
                 "Don't forget our meeting...",
                 "Hi Bob, don't forget our meeting tomorrow at 10am. See you there!",
+
                 Date(),
                 false,
                 false,

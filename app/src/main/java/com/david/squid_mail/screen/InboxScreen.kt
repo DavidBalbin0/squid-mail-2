@@ -55,10 +55,10 @@ fun InboxScreen(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet {
-                DrawerMenu(
-                    navigationItems = navigationItems,
-            }
+//            ModalDrawerSheet {
+//                DrawerMenu(
+//                    navigationItems = navigationItems,
+//            }
         }) {
         Scaffold(
             topBar = {
