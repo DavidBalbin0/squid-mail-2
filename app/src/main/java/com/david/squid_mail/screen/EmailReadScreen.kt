@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -56,11 +57,9 @@ fun EmailReadScreen(
                             contentDescription = "Favorite"
                         )
                     }
-                    IconButton(onClick = { viewModel.replyToEmail() }) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Reply")
-                    }
+
                     IconButton(onClick = { viewModel.deleteEmail() }) {
-                        Icon(Icons.Default.ShoppingCart, contentDescription = "Delete")
+                        Icon(Icons.Default.Delete, contentDescription = "Delete")
                     }
                     IconButton(onClick = { viewModel.addToCalendar() }) {
                         Icon(Icons.Default.DateRange, contentDescription = "Add to Calendar")

@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -40,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.david.squid_mail.ui.theme.ButtonWhite
+import com.david.squid_mail.ui.theme.DarkBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,7 +80,7 @@ fun EmailCompositionScreen(
                     Row(){
 
                         IconButton(onClick = { /* Handle edit action */ }) {
-                            Icon(Icons.Filled.Edit, contentDescription = "Edit", tint = Color(0xFF7C7C7C),)
+                            Icon(Icons.Filled.DateRange, contentDescription = "Edit", tint = Color(0xFF7C7C7C),)
                         }
                         IconButton(onClick = { /* Handle more actions */ }) {
                             Icon(Icons.Filled.MoreVert, contentDescription = "More", tint = Color(0xFF7C7C7C))
@@ -91,11 +96,12 @@ fun EmailCompositionScreen(
                         ) {
                             Box(
                             modifier = Modifier
-                                .size(50.dp)
+                               .size(0.dp)
                                 .background(Color(0xFF1C4670), shape = CircleShape)
-                        ) {
+                        )
+                            {
                             Text(
-                                text = "JM",
+                                text = "",
                                 fontSize = (16.sp),
                                 color = Color.White,
                                 modifier = Modifier.align(Alignment.Center)
@@ -179,6 +185,7 @@ fun EmailCompositionScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
+                    colors = ButtonDefaults.buttonColors(DarkBlue),
                     onClick = { viewModel.sendEmail(
                         onSuccess = { navController.popBackStack() },
                         onError = { /* Handle error */ }
@@ -191,9 +198,11 @@ fun EmailCompositionScreen(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Button(
+                    colors = ButtonDefaults.buttonColors(DarkBlue),
                     onClick = { viewModel.saveDraft(
                         onSuccess = { navController.popBackStack() },
                         onError = { /* Handle error */ }
+
                     ) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -208,10 +217,10 @@ fun onCloseClick() {
     TODO("Not yet implemented")
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun EmailCompositionScreenPreview() {
-//    val viewModel = EmailCompositionViewModel()
-//    val navController = rememberNavController()
-//    EmailCompositionScreen(viewModel = viewModel, navController = navController)
-//}
+@Preview(showBackground = true)
+@Composable
+fun EmailCompositionScreenPreview() {
+  val viewModel = EmailCompositionViewModel(LocalContext.current)
+    val navController = rememberNavController()
+   EmailCompositionScreen(viewModel = viewModel, navController = navController)
+}
