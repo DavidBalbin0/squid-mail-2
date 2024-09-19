@@ -15,7 +15,8 @@ class RegistrationViewModel : ViewModel() {
     // Estados dos campos de entrada
     var email by mutableStateOf("")
         internal set
-
+    var name by mutableStateOf("")
+        internal set
     var password by mutableStateOf("")
         internal set
 
@@ -40,12 +41,16 @@ class RegistrationViewModel : ViewModel() {
         internal set
 
     // Funções para atualizar os campos
+
     fun onEmailChange(newEmail: String) {
         email = newEmail
         validateEmail()
         validateForm()
     }
-
+    fun onNameChange(newName: String) {
+        name = newName
+        validateForm()
+    }
     fun onPasswordChange(newPassword: String) {
         password = newPassword
         validatePassword()
@@ -126,4 +131,5 @@ class RegistrationViewModel : ViewModel() {
         val passwordPattern = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$"
         return Regex(passwordPattern).matches(password)
     }
+
 }
