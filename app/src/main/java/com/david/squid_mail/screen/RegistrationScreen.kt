@@ -1,6 +1,7 @@
 package com.david.squid_mail.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,15 +12,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,6 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.david.squid_mail.R
+import com.david.squid_mail.ui.theme.ButtonWhite
+import com.david.squid_mail.ui.theme.DarkBlue
 import com.david.squid_mail.ui.theme.LogoColor
 import java.util.jar.Attributes.Name
 
@@ -75,7 +81,7 @@ fun RegistrationScreen(
             tint = LogoColor,
             //alteraçao de tamanho
             modifier = Modifier
-                .size(150.dp)
+                .size(120.dp)
                 .padding(top = 50.dp) // Adiciona 16.dp de espaçamento na parte superior
         )
 
@@ -85,12 +91,23 @@ fun RegistrationScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .border(
+                width = 2.dp,
+                color = Color.Gray,
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp
+                )
+            )
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
+
+
     ) {
 
 
+        Spacer(modifier = Modifier.height(100.dp))
 
         Text(
             text = "Crie sua conta",
@@ -222,7 +239,9 @@ fun RegistrationScreen(
                 )
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = isFormValid
+            enabled = isFormValid,
+            colors = ButtonDefaults.buttonColors(DarkBlue),
+
         ) {
             Text("Cadastrar")
         }
