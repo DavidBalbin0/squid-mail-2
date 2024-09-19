@@ -5,13 +5,10 @@
       <entry key="InboxScreenPreview">
         <State />
       </entry>
-      <entry key="LoginScreenPreview">
+      <entry key="MainActivity">
         <State />
       </entry>
       <entry key="RegistrationScreenPreview">
-        <State />
-      </entry>
-      <entry key="WelcomeScreenPreview">
         <State />
       </entry>
       <entry key="app">
