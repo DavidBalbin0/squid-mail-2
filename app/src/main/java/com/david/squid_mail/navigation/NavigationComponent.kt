@@ -27,7 +27,7 @@ import com.david.squid_mail.screen.WelcomeScreen
 @Composable
 fun NavigationComponent(navController: NavHostController) {
     val context = LocalContext.current.applicationContext
-    NavHost(navController = navController, startDestination = "inbox") {
+    NavHost(navController = navController, startDestination = "calendar") {
         composable("welcome") {
             WelcomeScreen(navController)
         }

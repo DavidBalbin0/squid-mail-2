@@ -7,15 +7,15 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.david.squid_mail.database.Converters
 import com.david.squid_mail.model.Email
-import com.david.squid_mail.model.Event
+
 import com.david.squid_mail.model.Folder
 
-@Database(entities = [Email::class, Folder::class, Event::class], version =5)
+@Database(entities = [Email::class, Folder::class], version =6)
 @TypeConverters(Converters::class)
 abstract class EmailDb : RoomDatabase(){
     abstract fun emailDao(): EmailDao
     abstract fun folderDao(): FolderDao
-    abstract fun eventDao(): EventDao
+
 
             companion object {
         const val DB_NAME = "app_db"
