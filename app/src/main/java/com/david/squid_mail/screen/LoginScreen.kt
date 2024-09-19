@@ -59,8 +59,8 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController){
 
     Surface(
         modifier = Modifier.fillMaxSize(),
-//        color = Color(0xFF278AB0)
-        color = MaterialTheme.colorScheme.background
+        color = Color(0xFF278AB0),
+        //color = MaterialTheme.colorScheme.background
     ){
         // commit
         Column (
